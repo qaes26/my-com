@@ -1,0 +1,25 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+
+# Production
+dist
+build
+
+# Misc
+.DS_Store
+.env
+.npm
+*.log
+
+# Backend specific
+backend/temp_code
+backend/node_modules
+
+# IDEs
+.vscode
+.idea
