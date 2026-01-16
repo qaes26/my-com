@@ -26,8 +26,9 @@ const IDELayout: React.FC = () => {
         setLoading(true);
         setOutput("Running...");
         try {
-            // Assuming backend is on localhost:5000
-            const response = await axios.post('http://localhost:5000/execute', {
+            // Use environment variable for backend URL or default to localhost
+            const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+            const response = await axios.post(`${backendUrl}/execute`, {
                 language,
                 code
             });

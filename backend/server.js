@@ -55,9 +55,21 @@ app.post('/execute', async (req, res) => {
         const filePath = path.join(jobDir, fileName);
         await fs.writeFile(filePath, code);
 
-        const dockerCmd = `docker run --rm -v "${jobDir}:/usr/src/app" ide-runner bash -c "timeout ${timeout} ${runCmd}"`;
+        let execCmd = '';
 
-        exec(dockerCmd, (error, stdout, stderr) => {
+        // Check execution mode: 'docker' (default) or 'direct' (for Render/Cloud)
+        const isDirectMode = process.env.EXECUTION_MODE === 'direct';
+
+        if (isDirectMode) {
+            // Run directly on the server (DANGEROUS if not in a container, but safe-ish inside Render container)
+            // Using 'timeout' to prevent infinite loops
+            execCmd = `cd "${jobDir}" && timeout ${timeout} ${runCmd}`;
+        } else {
+            // Run inside a separate Docker container (Sandboxed)
+            execCmd = `docker run --rm -v "${jobDir}:/usr/src/app" ide-runner bash -c "timeout ${timeout} ${runCmd}"`;
+        }
+
+        exec(execCmd, (error, stdout, stderr) => {
             // Cleanup job directory
             fs.remove(jobDir).catch(err => console.error("Cleanup error:", err));
 
