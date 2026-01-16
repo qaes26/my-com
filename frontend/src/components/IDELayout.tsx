@@ -46,16 +46,19 @@ const IDELayout: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-screen bg-vscode-bg text-vscode-text">
+        <div className="flex flex-col h-[100dvh] bg-vscode-bg text-vscode-text">
             {/* Header */}
-            <header className="h-12 bg-vscode-header flex items-center justify-between px-4 border-b border-black">
-                <div className="flex items-center gap-2">
-                    <Code2 className="text-vscode-blue" size={20} />
-                    <span className="font-semibold text-white tracking-wide">Online IDE</span>
+            <header className="h-14 md:h-12 bg-vscode-header flex flex-wrap md:flex-nowrap items-center justify-between px-3 md:px-4 border-b border-black shrink-0">
+                <div className="flex items-center gap-2.5">
+                    {/* UPDATED LOGO: Q++ */}
+                    <div className="flex items-center justify-center bg-blue-600 w-8 h-8 rounded-md shadow-lg shadow-blue-500/30">
+                        <span className="font-bold text-white text-xs font-mono">Q++</span>
+                    </div>
+                    <span className="font-semibold text-white tracking-wide text-sm md:text-base hidden xs:block">Online Compiler</span>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    <div className="flex bg-vscode-activity rounded-md p-1">
+                <div className="flex items-center gap-2 md:gap-3 ml-auto">
+                    <div className="flex bg-vscode-activity rounded-md p-1 scale-90 md:scale-100 origin-right">
                         <button
                             onClick={() => handleLanguageChange('cpp')}
                             className={`px-3 py-1 text-xs rounded-sm transition-colors ${language === 'cpp' ? 'bg-vscode-blue text-white' : 'hover:text-white'}`}
@@ -73,18 +76,18 @@ const IDELayout: React.FC = () => {
                     <button
                         onClick={handleRunCode}
                         disabled={loading}
-                        className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-sm transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-3 md:px-4 py-1.5 rounded-sm transition-colors text-xs md:text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-green-900/20"
                     >
                         <Play size={14} fill="currentColor" />
-                        {loading ? 'Running...' : 'Run Code'}
+                        {loading ? 'Running...' : 'Run'}
                     </button>
                 </div>
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col md:flex-row overflow-hidden">
+            <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
                 {/* Editor Section */}
-                <section className="flex-1 flex flex-col min-h-[50%] md:min-h-0 border-r border-black relative">
+                <section className="flex-1 flex flex-col order-1 md:order-1 h-[60%] md:h-auto border-b md:border-b-0 md:border-r border-black relative">
                     <CodeEditor
                         language={language}
                         code={code}
@@ -93,10 +96,10 @@ const IDELayout: React.FC = () => {
                 </section>
 
                 {/* Terminal Section */}
-                <section className="h-[30%] md:h-full md:w-[40%] bg-vscode-sidebar flex flex-col">
-                    <div className="bg-vscode-header px-4 py-2 text-xs font-medium text-gray-400 flex items-center gap-2 border-b border-black">
+                <section className="order-2 md:order-2 h-[40%] md:h-full md:w-[40%] bg-vscode-sidebar flex flex-col shadow-inner">
+                    <div className="bg-vscode-header px-4 py-2 text-xs font-medium text-gray-400 flex items-center gap-2 border-b border-black shrink-0">
                         <TerminalIcon size={12} />
-                        CONSOLE
+                        CONSOLE OUTPUT
                     </div>
                     <Terminal output={output} />
                 </section>
