@@ -26,8 +26,8 @@ const IDELayout: React.FC = () => {
         setLoading(true);
         setOutput("Running...");
         try {
-            // Use environment variable for backend URL or default to localhost
-            const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+            // Direct connection to live Render backend
+            const backendUrl = 'https://my-com-1.onrender.com';
             const response = await axios.post(`${backendUrl}/execute`, {
                 language,
                 code
